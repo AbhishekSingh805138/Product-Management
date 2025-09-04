@@ -1,0 +1,31 @@
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --accent: #22c55e;
+  --danger: #ef4444;
+  --border: #1f2937;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: system-ui, Arial, sans-serif; background: var(--bg); color: var(--text);
+}
+.container { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+h1 { margin: 0 0 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.form { display: inline-block; vertical-align: top; margin-right: 24px; }
+.form input { display: block; margin: 8px 0; padding: 8px; background: #0b1220; border: 1px solid var(--border); color: var(--text); border-radius: 6px; width: 260px; }
+button { background: var(--accent); border: none; color: #04210f; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+button:hover { opacity: 0.9; }
+.hidden { display: none; }
+.badge { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: #0e4a25; color: #9ef9c2; font-size: 12px; }
+.product {
+  display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border);
+}
+.product .meta { color: var(--muted); font-size: 12px; }
+.row-actions button { margin-left: 8px; }
+.hint { color: var(--muted); margin-top: 8px; font-size: 12px; }
+#admin-create input { width: 180px; display: inline-block; margin-right: 8px; }
+#create-btn, #update-btn, #cancel-edit-btn { margin-right: 6px; }
+
