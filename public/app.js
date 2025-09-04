@@ -9,6 +9,7 @@ const els = {
   userEmail: document.getElementById('user-email'),
   userRole: document.getElementById('user-role'),
   logoutBtn: document.getElementById('logout-btn'),
+  productsSection: document.getElementById('products-section'),
   loginEmail: document.getElementById('login-email'),
   loginPassword: document.getElementById('login-password'),
   loginBtn: document.getElementById('login-btn'),
@@ -59,6 +60,7 @@ function renderAuth() {
   if (state.user) {
     els.authed.classList.remove('hidden');
     document.getElementById('auth-forms').classList.add('hidden');
+    els.productsSection.classList.remove('hidden');
     els.userEmail.textContent = state.user.email;
     els.userRole.textContent = state.user.is_admin ? 'admin' : 'user';
     els.userRole.style.display = 'inline-block';
@@ -71,13 +73,16 @@ function renderAuth() {
   } else {
     els.authed.classList.add('hidden');
     document.getElementById('auth-forms').classList.remove('hidden');
+    els.productsSection.classList.add('hidden');
     els.adminCreate.classList.add('hidden');
+    els.productsList.innerHTML = '';
   }
 }
 
 async function loadProducts() {
   let list = [];
   els.productsList.innerHTML = '';
+  if (!state.user) return; // hide products for non-logged-in users
   try {
     const res = await api('/products');
     const data = await res.json();
@@ -98,7 +103,7 @@ async function loadProducts() {
     const wrap = document.createElement('div');
     wrap.className = 'product';
     const left = document.createElement('div');
-    left.innerHTML = `<div><strong>${escapeHtml(p.name)}</strong> - $${Number(p.price).toFixed(2)} (${p.stock})</div>
+    left.innerHTML = `<div><strong>${escapeHtml(p.name)}</strong> - ${formatINR(p.price)} (${p.stock})</div>
       <div class="meta">${escapeHtml(p.description || '')}</div>`;
     wrap.appendChild(left);
     const right = document.createElement('div');
@@ -120,6 +125,15 @@ async function loadProducts() {
 
 function escapeHtml(str) {
   return String(str).replace(/[&<>"]+/g, (s) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[s]));
+}
+
+function formatINR(value) {
+  try {
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(value || 0));
+  } catch (e) {
+    const num = Number(value || 0).toFixed(2);
+    return 'Rs. ' + num;
+  }
 }
 
 async function login() {
@@ -151,7 +165,6 @@ function logout() {
   localStorage.removeItem('token');
   state.user = null;
   renderAuth();
-  loadProducts();
 }
 
 function clearForm() {
@@ -224,5 +237,5 @@ els.cancelEditBtn.onclick = cancelEdit;
 
 (async function init() {
   await refreshUser();
-  await loadProducts();
+  if (state.user) await loadProducts();
 })();
