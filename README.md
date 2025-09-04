@@ -2,6 +2,10 @@
 
 A minimal full‑stack app for managing products with user authentication (JWT) and admin‑only CRUD operations. The backend is built with Express 5 and PostgreSQL; the frontend is a small vanilla HTML/CSS/JS app served statically.
 
+#ADMIN CAN LOGIN DIRECTLY 
+- admin@local.test
+- pass-admin123
+
 ## Tech Stack
 - Backend: Node.js, Express 5, CommonJS modules
 - Database: PostgreSQL (`pg`)
